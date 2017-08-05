@@ -21,7 +21,8 @@ namespace CommandLayer
 
             m_Commands = new Dictionary<Type, object>()
             {
-                { typeof(IServerInfoCommand), new ServerInfoCommand(m_WorldServerConfiguration) }
+                { typeof(IServerInfoCommand), new ServerInfoCommand(m_WorldServerConfiguration) },
+                { typeof(ICreateAccountCommand), new CreateAccountCommand(m_WorldServerConfiguration) }
             };
         }
 

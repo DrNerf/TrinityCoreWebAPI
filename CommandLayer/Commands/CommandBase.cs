@@ -41,16 +41,25 @@ namespace CommandLayer
         /// <returns>The command result.</returns>
         protected async Task<string> CallServerCommand(string command)
         {
-            using (var client = CreateClient())
+            try
             {
-                var requestContent = new StringContent(string.Format(m_CommandRequestTemplate, command));
-                var response = await client.PostAsync(
-                    $"http://{m_WorldServerConfiguration.Address}:{m_WorldServerConfiguration.Port}",
-                    requestContent);
-                var result = await response.Content.ReadAsStringAsync();
-                var doc = XDocument.Parse(result);
+                using (var client = CreateClient())
+                {
+                    var requestContent = new StringContent(string.Format(m_CommandRequestTemplate, command));
+                    var response = await client.PostAsync(
+                        $"http://{m_WorldServerConfiguration.Address}:{m_WorldServerConfiguration.Port}",
+                        requestContent);
+                    var result = await response.Content.ReadAsStringAsync();
+                    var doc = XDocument.Parse(result);
 
-                return doc.Descendants(XName.Get("result")).First().Value;
+                    var temp = doc.Descendants(XName.Get("result")).First().Value;
+                    return doc.Descendants(XName.Get("result")).First().Value.Trim();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
         }
 
@@ -90,9 +99,6 @@ namespace CommandLayer
         /// Executes the command.
         /// </summary>
         /// <returns>The command result.</returns>
-        public virtual Task<T> Execute()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract Task<T> Execute();
     }
 }

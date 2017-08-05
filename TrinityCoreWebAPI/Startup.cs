@@ -74,6 +74,8 @@ namespace TrinityCoreWebAPI
             services.AddSingleton<WorldServerConfiguration>(WorldServerConfiguration);
             services.AddTransient<IServerInfoCommand>(
                 (serviceProvider) => commandsFactory.Create<IServerInfoCommand>());
+            services.AddTransient<ICreateAccountCommand>(
+                (serviceProvider) => commandsFactory.Create<ICreateAccountCommand>());
         }
     }
 }
